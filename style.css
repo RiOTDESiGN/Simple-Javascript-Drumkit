@@ -193,7 +193,7 @@ input[type=range]::-webkit-slider-thumb {
     background-color: var(--bd);
     color: beige;
     font-family: Arial, Helvetica, sans-serif;
-    letter-spacing: 1px;
+    font-size: 10px;
     text-align: center;
     border-radius: 6px;
     padding: 5px 8px;
@@ -201,6 +201,17 @@ input[type=range]::-webkit-slider-thumb {
     top: -150px;
     left: -109px;
     z-index: 1;
+  }
+
+  .tip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 20%;
+    right: 100%;
+    margin-left: -8px;
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent var(--bd) transparent transparent;
   }
 
 .display-container {
