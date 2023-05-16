@@ -14,6 +14,8 @@ const soundList = [
   {key: "3", fileName: "hihat.wav"},
 ]
 
+let buttonPressed = false;
+
 function drum(folder, fileInfo) {
 
   const button = document.createElement("button");
@@ -45,12 +47,24 @@ window.addEventListener("keydown", (event) => {
 
   if (!soundFile) return;
 
+  if (!buttonPressed) {
+    const elementToClick = document.getElementById(soundFile.fileName);
+    if (elementToClick) {
+      elementToClick.dispatchEvent(new Event("mousedown"));
+      buttonPressed = true;
+    }
+  }
+});
+
+window.addEventListener("keyup", (event) => {
+  const soundFile = soundList.find((soundInfo) => soundInfo.key === event.key);
+
+  if (!soundFile) return;
+
   const elementToClick = document.getElementById(soundFile.fileName);
   if (elementToClick) {
-    elementToClick.dispatchEvent(new Event("mousedown"));
-    setTimeout(() => {
-      elementToClick.dispatchEvent(new Event("mouseup"));
-    }, 60);
+    elementToClick.dispatchEvent(new Event("mouseup"));
+    buttonPressed = false;
   }
 });
 
