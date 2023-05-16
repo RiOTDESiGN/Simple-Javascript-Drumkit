@@ -1,58 +1,62 @@
-const drumkitContainer = document.getElementById("drumkit")
+const drumkitContainer = document.getElementById("drumkit");
 const display = document.getElementById("display");
 const volumeSlider = document.getElementById("volume-slider");
-const soundFolder = "sounds/"
+const soundFolder = "sounds/";
 const soundList = [
-  {key: "7", fileName: "snap.wav"},
-  {key: "8", fileName: "tink.wav"},
-  {key: "9", fileName: "tom.wav"},
-  {key: "4", fileName: "kick.wav"},
-  {key: "5", fileName: "lohat.wav"},
-  {key: "6", fileName: "ride.wav"},
-  {key: "1", fileName: "snare.wav"},
-  {key: "2", fileName: "clap.wav"},
-  {key: "3", fileName: "hihat.wav"},
-]
+  { key: "7", fileName: "snap.wav" },
+  { key: "8", fileName: "tink.wav" },
+  { key: "9", fileName: "tom.wav" },
+  { key: "4", fileName: "kick.wav" },
+  { key: "5", fileName: "lohat.wav" },
+  { key: "6", fileName: "ride.wav" },
+  { key: "1", fileName: "snare.wav" },
+  { key: "2", fileName: "clap.wav" },
+  { key: "3", fileName: "hihat.wav" },
+];
 
-let buttonPressed = false;
+let keysPressed = [];
 
 function drum(folder, fileInfo) {
+  const buttons = [];
 
-  const button = document.createElement("button");
-  button.id = fileInfo.fileName;
-  display.textContent = "";
+  fileInfo.key.split("").forEach((key) => {
+    const button = document.createElement("button");
+    button.id = fileInfo.fileName;
+    display.textContent = "";
 
-  const sound = new Audio(folder + fileInfo.fileName)
+    const sound = new Audio(folder + fileInfo.fileName);
 
-  button.addEventListener("mousedown", () =>  {
-    display.textContent = fileInfo.fileName.replace(/\.[^.]+$/, "");
-    button.classList.add("active");
-    playSound(sound);
-  })
+    button.addEventListener("mousedown", () => {
+      display.textContent = fileInfo.fileName.replace(/\.[^.]+$/, "");
+      button.classList.add("active");
+      playSound([sound]);
+    });
 
-  button.addEventListener("mouseup", () => {
-    button.classList.remove("active");
-    button.blur();
+    button.addEventListener("mouseup", () => {
+      button.classList.remove("active");
+      button.blur();
+    });
+
+    buttons.push(button);
   });
 
-  return button
-} 
+  return buttons;
+}
 
-const drumkitElements = soundList.map((soundInfo) => drum(soundFolder, soundInfo))
+const drumkitElements = soundList.flatMap((soundInfo) => drum(soundFolder, soundInfo));
 
-drumkitContainer.append(...drumkitElements)
+drumkitContainer.append(...drumkitElements);
 
 window.addEventListener("keydown", (event) => {
   const soundFile = soundList.find((soundInfo) => soundInfo.key === event.key);
 
-  if (!soundFile) return;
+  if (!soundFile || keysPressed.includes(event.key)) return;
 
-  if (!buttonPressed) {
-    const elementToClick = document.getElementById(soundFile.fileName);
-    if (elementToClick) {
-      elementToClick.dispatchEvent(new Event("mousedown"));
-      buttonPressed = true;
-    }
+  keysPressed.push(event.key);
+
+  const elementToClick = document.getElementById(soundFile.fileName);
+  if (elementToClick) {
+    elementToClick.dispatchEvent(new Event("mousedown"));
   }
 });
 
@@ -61,24 +65,28 @@ window.addEventListener("keyup", (event) => {
 
   if (!soundFile) return;
 
+  const index = keysPressed.indexOf(event.key);
+  if (index > -1) {
+    keysPressed.splice(index, 1);
+  }
+
   const elementToClick = document.getElementById(soundFile.fileName);
   if (elementToClick) {
     elementToClick.dispatchEvent(new Event("mouseup"));
-    buttonPressed = false;
   }
 });
 
-function playSound(audioElement) {
-  audioElement.volume = volumeSlider.value;
-  audioElement.currentTime = 0
-  audioElement.pause()
-  audioElement.play()
+function playSound(audioElements) {
+  audioElements.forEach((audioElement) => {
+    audioElement.volume = volumeSlider.value;
+    audioElement.currentTime = 0;
+    audioElement.pause();
+    audioElement.play();
+  });
 }
 
-// ************************************************************************ MOUSE WHEEL VOLUME SLIDER
-
+// Mouse Wheel Volume Slider
 window.addEventListener("wheel", (event) => {
-
   event.preventDefault();
 
   const scrollDirection = Math.sign(event.deltaY);
