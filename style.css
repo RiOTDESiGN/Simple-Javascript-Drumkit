@@ -173,9 +173,9 @@ input[type=range]::-webkit-slider-thumb {
 
 .tip:hover .tooltiptext {
     visibility: visible;
-  }
+}
 
-  .tip .tooltiptext::before {
+.tip .tooltiptext::before {
     content: "";
     position: absolute;
     bottom: 100%;
@@ -184,7 +184,7 @@ input[type=range]::-webkit-slider-thumb {
     border-width: 8px;
     border-style: solid;
     border-color: transparent transparent var(--bd) transparent;
-  }
+}
 
 .tip .tooltiptext {
     position: relative;
@@ -198,12 +198,12 @@ input[type=range]::-webkit-slider-thumb {
     border-radius: 6px;
     padding: 5px 8px;
     position: absolute;
-    top: -150px;
+    top: -136px;
     left: -109px;
     z-index: 1;
-  }
+}
 
-  .tip .tooltiptext::after {
+.tip .tooltiptext::after {
     content: "";
     position: absolute;
     bottom: 20%;
@@ -212,7 +212,7 @@ input[type=range]::-webkit-slider-thumb {
     border-width: 8px;
     border-style: solid;
     border-color: transparent var(--bd) transparent transparent;
-  }
+}
 
 .display-container {
     display: flex;
@@ -251,6 +251,24 @@ input[type=range]::-webkit-slider-thumb {
     .drumpad {
         display: grid;
     }
+    .tip .tooltiptext {
+        background-color: rgb(0, 0, 0);
+        color: rgb(255, 255, 255);
+        top: -144px;
+        left: -282px;
+        width: 282px;
+        height: 51px;
+        border-radius: 14px;
+        font-size: 10px;
+        padding: 0px 8px;
+        padding-top: 12px;
+    }
+    .tip .tooltiptext::before {
+        border: 0;
+    }
+    .tip .tooltiptext::after {
+        border: 0;
+    }
 }
 
 @media only screen and (max-width: 391px) {
@@ -268,5 +286,13 @@ input[type=range]::-webkit-slider-thumb {
     }
     .display {
         border-radius: 10px;
+    }
+    .tip .tooltiptext {
+        top: -330px;
+        left: -136px;
+        width: 140px;
+        height: 115px;
+        border-radius: 10px;
+        padding-top: 42px;
     }
 }
